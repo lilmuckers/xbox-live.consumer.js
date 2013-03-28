@@ -98,7 +98,9 @@ XboxLive.prototype._send = function(url, login, method, callback)
       resultData += chunk;
     });
     res.addListener('end', function() {
-      if(resultData){
+      if(res.statusCode == 500){
+        callback('Error', null, res);
+      } else if(resultData){
         var result = JSON.parse(resultData);
         callback(null, JSON.parse(resultData).data, res);
       } else {
