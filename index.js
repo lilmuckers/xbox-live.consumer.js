@@ -93,11 +93,11 @@ XboxLive.prototype._send = function(url, login, method, callback)
   }
   
   //initiate the connection
-  request = https.request(options, function(res){
-    res.addListener('data', function(chunk){
+  request = https.request(options, function httpsConnectionResponseHandler(res){
+    res.addListener('data', function httpsConnectionResponseData(chunk){
       resultData += chunk;
     });
-    res.addListener('end', function() {
+    res.addListener('end', function httpsConnectionResponseEnd() {
       if(res.statusCode == 500){
         callback('Error', null, res);
       } else if(resultData){
@@ -113,7 +113,7 @@ XboxLive.prototype._send = function(url, login, method, callback)
   request.write(data);
   
   //catch an error
-  request.on('error', function(e){
+  request.on('error', function httpsConnectionResponseError(e){
     callback(e);
   });
   request.end();
