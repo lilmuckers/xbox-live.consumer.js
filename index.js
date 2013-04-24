@@ -6,6 +6,7 @@ var querystring  = require('querystring'),
 
 function XboxLive(baseUrl, gamertag, email, password)
 {
+  this.userAgent = 'Xbox Live Consumer';
   this.baseUrl = baseUrl + '/%s/%s';
   this.gamertag = gamertag;
   this.login = {
@@ -20,6 +21,11 @@ function XboxLive(baseUrl, gamertag, email, password)
     achievements  : 'achievements/%s',
     game          : 'gameinfo/%s'
   }
+}
+
+XboxLive.prototype.setUserAgent = function(userAgent)
+{
+  this.userAgent = userAgent;
 }
 
 XboxLive.prototype.profile = function(callback)
@@ -76,6 +82,9 @@ XboxLive.prototype._send = function(url, login, method, callback)
   var headers = {};
   headers['Host'] = parsedUrl.host;
   headers['Content-Length'] = data.length;
+  
+  //set the User Agent header
+  headers['User-Agent'] = this.userAgent;
   
   //set up the request
   var resultData = '';
